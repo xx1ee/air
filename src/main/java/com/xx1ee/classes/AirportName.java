@@ -1,2 +1,5 @@
-package com.xx1ee.classes;public class AirportName {
+package com.xx1ee.classes;
+
+public class AirportName {
+
 }

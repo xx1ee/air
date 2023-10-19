@@ -1,11 +1,17 @@
 package com.xx1ee.classes;
 
 public enum Status{
-    FOX("20th Century Fox");
-    private String value;
+    ON_TIME("On Time"),
+    DELAYED("Delayed"),
+    DEPARTED("Departed"),
+    ARRIVED("Arrived"),
+    SCHEDULED("Scheduled"),
+    CANCELLED("Cancelled");
 
-    Status(String value) {
-        this.value = value;
+    private String status;
+
+    Status(String status) {
+        this.status = status;
     }
 
 }

@@ -2,9 +2,7 @@ package com.xx1ee.entity;
 
 import com.xx1ee.classes.AirportName;
 import com.xx1ee.classes.City;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,13 +16,16 @@ import org.hibernate.type.SqlTypes;
 @Builder
 @Table(name = "airports_data", schema = "bookings")
 @Entity
-public class AirportsData {
+public class airports_data {
     @Id
     String airport_code;
     @JdbcTypeCode(SqlTypes.JSON)
     AirportName airport_name;
     @JdbcTypeCode(SqlTypes.JSON)
     City city;
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "")
+    flights flights;
     String coordinates;
     String timezone;
 }

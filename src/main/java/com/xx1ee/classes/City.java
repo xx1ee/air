@@ -1,2 +1,4 @@
-package com.xx1ee.classes;public class City {
+package com.xx1ee.classes;
+
+public class City {
 }

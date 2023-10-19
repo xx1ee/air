@@ -1,2 +1,4 @@
-package com.xx1ee.classes;public class ContactData {
+package com.xx1ee.classes;
+
+public class ContactData {
 }
