@@ -44,5 +44,5 @@ public class flights {
     OffsetDateTime actual_departure;
     OffsetDateTime actual_arrival;
     @OneToMany(mappedBy = "flights")
-    List<tickets> ticketsList = new ArrayList<>();
+    List<ticket_flights> ticketsList = new ArrayList<>();
 }

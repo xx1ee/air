@@ -24,6 +24,6 @@ public class bookings {
     String book_ref;
     LocalDateTime book_date;
     Long total_amount;
-    @OneToMany
+    @OneToMany(mappedBy = "book_ref")
     List<tickets> tickets = new ArrayList<>();
 }

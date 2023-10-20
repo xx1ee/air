@@ -18,6 +18,7 @@ public class tickets {
     @Id
     String ticket_no;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_ref")
     bookings book_ref;
     @ManyToOne(fetch = FetchType.LAZY)
     flights flights;

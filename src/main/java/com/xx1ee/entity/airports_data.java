@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,9 +25,10 @@ public class airports_data {
     AirportName airport_name;
     @JdbcTypeCode(SqlTypes.JSON)
     City city;
-    @ManyToOne
-    @JoinColumn(nullable = false, name = "")
-    flights flights;
     String coordinates;
     String timezone;
+    @OneToMany(mappedBy="departure_airport")
+    List<flights> departureList;
+    @OneToMany(mappedBy = "arrival_airport")
+    List<flights> arrivalList;
 }
