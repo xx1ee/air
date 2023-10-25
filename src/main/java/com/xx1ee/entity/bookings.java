@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ import java.util.List;
 public class bookings {
     @Id
     String book_ref;
-    LocalDateTime book_date;
+    OffsetDateTime book_date;
     Long total_amount;
     @OneToMany(mappedBy = "book_ref")
     List<tickets> tickets = new ArrayList<>();

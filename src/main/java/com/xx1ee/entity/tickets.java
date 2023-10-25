@@ -25,5 +25,6 @@ public class tickets {
     String passenger_id;
     String passenger_name;
     @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
     ContactData contact_data;
 }

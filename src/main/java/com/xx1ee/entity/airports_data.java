@@ -22,8 +22,10 @@ public class airports_data {
     @Id
     String airport_code;
     @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
     AirportName airport_name;
     @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
     City city;
     String coordinates;
     String timezone;

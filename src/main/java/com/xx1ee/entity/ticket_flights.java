@@ -19,10 +19,10 @@ public class ticket_flights {
     BoardingPassesPK boardingPassesPK;
     String fare_conditions;
     Long amount;
-    @OneToMany
-    @JoinColumn(name="ticket_no")
-    List<tickets> tickets;
     @ManyToOne
-    @JoinColumn(name="flight_id")
+    @JoinColumn(name="ticket_no", updatable = false, insertable = false)
+    tickets tickets;
+    @ManyToOne
+    @JoinColumn(name="flight_id", updatable = false, insertable = false)
     flights flights;
 }

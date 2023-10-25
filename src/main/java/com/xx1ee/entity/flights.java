@@ -19,7 +19,8 @@ import java.util.List;
 public class flights {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "flights_flight_id_seq")
-    @Column(name = "flight_id", updatable = false, nullable = false)
+    @SequenceGenerator(name = "flights_flight_id_seq", sequenceName = "flight_seq", allocationSize = 1)
+    @Column(updatable = false, nullable = false)
     Integer flight_id;
     @Column(nullable = false)
     String flight_no;
@@ -28,18 +29,15 @@ public class flights {
     @Column(nullable = false)
     OffsetDateTime getScheduled_arrival;
     @ManyToOne
-    @Column(nullable = false)
-    @JoinColumn(name = "departure_airport")
+    @JoinColumn(name = "departure_airport", nullable = false)
     airports_data departure_airport;
     @ManyToOne
-    @Column(nullable = false)
-    @JoinColumn(name = "arrival_airport")
+    @JoinColumn(name = "arrival_airport", nullable = false)
     airports_data arrival_airport;
     @Column(nullable = false)
     String status;
     @ManyToOne
-    @JoinColumn(name = "aircraft_code")
-    @Column(nullable = false)
+    @JoinColumn(name = "aircraft_code", nullable = false)
     aircrafts_data aircraft_code;
     OffsetDateTime actual_departure;
     OffsetDateTime actual_arrival;

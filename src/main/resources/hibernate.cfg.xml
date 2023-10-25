@@ -4,16 +4,20 @@
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <property name="connection.url">jdbc:postgresql://localhost:5432/demo</property>
+    <property name="javax.persistence.jdbc.url">jdbc:postgresql://localhost:5432/demo</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/demo</property>
     <property name="connection.username">postgres</property>
-    <property name="connection.driver_class">org.postgresql.Driver</property>
-    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <property name="connection.password">English56</property>
+    <property name="javax.persistence.jdbc.driver">org.postgresql.Driver</property>
+    <property name="org.hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
     <mapping class="com.xx1ee.entity.bookings"/>
     <mapping class="com.xx1ee.entity.aircrafts_data"/>
     <mapping class="com.xx1ee.entity.airports_data"/>
     <mapping class="com.xx1ee.entity.flights"/>
     <mapping class="com.xx1ee.entity.seats"/>
     <mapping class="com.xx1ee.entity.tickets"/>
+    <mapping class="com.xx1ee.entity.boarding_passes"/>
+    <mapping class="com.xx1ee.entity.ticket_flights"/>
     <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 

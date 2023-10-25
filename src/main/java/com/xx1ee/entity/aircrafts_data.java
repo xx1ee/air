@@ -1,6 +1,7 @@
 package com.xx1ee.entity;
 
 import com.xx1ee.classes.Model;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -23,5 +24,6 @@ public class aircrafts_data {
     String aircraft_code;
     Integer range;
     @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
     Model model;
 }
