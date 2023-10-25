@@ -1,9 +1,12 @@
-import com.xx1ee.entity.aircrafts_data;
-import com.xx1ee.entity.airports_data;
-import com.xx1ee.entity.tickets;
+import com.xx1ee.classes.BoardingPassesPK;
+import com.xx1ee.classes.SeatsPK;
+import com.xx1ee.entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.junit.jupiter.api.Assertions;
+
+import java.util.List;
 
 public class Test {
     @org.junit.jupiter.api.Test
@@ -52,6 +55,100 @@ public class Test {
             System.out.println(e.getDepartureList().get(0).getActual_departure());
             System.out.println(e.getDepartureList().get(0).getStatus());
             System.out.println(e.getCity().getEn() + " " + e.getCity().getRu());
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test4() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            var e = session.createNativeQuery("SELECT * FROM boarding_passes  " +
+                    "e WHERE e.ticket_no = '0005432325079'", boarding_passes.class).getResultList();
+            for (var s : e) {
+                System.out.println("flight_id " + s.getBoardingPassesPK().getFlight_id());
+                System.out.println("seat_no " + s.getSeat_no());
+                System.out.println("boarding " + s.getBoarding_no());
+                System.out.println("amount " + s.getTicket_flights().getAmount());
+            }
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test5() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            var e = session.createNativeQuery("SELECT * FROM boarding_passes  " +
+                    "e WHERE e.flight_id = 543", boarding_passes.class).getResultList();
+            for (var s : e) {
+                System.out.println("flight_id " + s.getBoardingPassesPK().getFlight_id());
+                System.out.println("seat_no " + s.getSeat_no());
+                System.out.println("boarding " + s.getBoarding_no());
+                System.out.println("amount " + s.getTicket_flights().getAmount() + "\n");
+            }
+            Assertions.assertEquals(381, e.size());
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test6() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            var e = session.createNativeQuery("SELECT * FROM bookings  " +
+                    "e WHERE e.book_ref = '3B54BB'", bookings.class).getResultList();
+            for (var s : e) {
+                System.out.println(s.getBook_ref() + " ");
+                System.out.println(s.getBook_date() + " ");
+                System.out.println(s.getTotal_amount() + "\n");
+                var tickets = s.getTickets();
+                for (var t : tickets) {
+                    System.out.println(t.getPassenger_name());
+                    System.out.println(t.getTicket_no());
+                    System.out.println(t.getContact_data().getPhone() + " " + t.getContact_data().getEmail());
+                }
+            }
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test7() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            var e = session.createNativeQuery("SELECT * FROM flights  " +
+                    "e WHERE e.flight_no = 'PG0159'", flights.class).getResultList();
+            for (var s : e) {
+                System.out.println(s.getFlight_id());
+                System.out.println(s.getStatus() + " ");
+                System.out.println(s.getAircraft_code().getModel().getRu() + " ");
+                System.out.println(s.getActual_departure() + " ");
+                System.out.println(s.getArrival_airport().getAirport_name().getRu());
+                System.out.println(s.getDeparture_airport().getAirport_name().getRu());
+                System.out.println(s.getScheduled_arrival() + "\n");
+            }
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test8() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            aircrafts_data aircrafts_data = session.get(com.xx1ee.entity.aircrafts_data.class, 319);
+            seats seats = com.xx1ee.entity.seats.builder().seatsPK(new SeatsPK("319", "123333")).seat_no("123333").aircraft_code(aircrafts_data).fare_conditions("Economy").build();
+            session.persist(seats);
             session.getTransaction().commit();
         }
     }

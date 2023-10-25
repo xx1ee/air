@@ -1,10 +1,14 @@
 package com.xx1ee.entity;
 
+import com.xx1ee.classes.BoardingPassesPK;
+import com.xx1ee.classes.SeatsPK;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -13,8 +17,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "seats", schema = "bookings")
 public class seats {
-    @Id
-    String aircraft_code;
+    @EmbeddedId
+    SeatsPK seatsPK;
+    @ManyToOne
+    @JoinColumn(name = "aircraft_code", insertable = false, updatable = false)
+    aircrafts_data aircraft_code;
     String seat_no;
     String fare_conditions;
 }

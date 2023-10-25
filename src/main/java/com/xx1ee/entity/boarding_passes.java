@@ -18,6 +18,7 @@ public class boarding_passes {
     @EmbeddedId
     BoardingPassesPK boardingPassesPK;
     Integer boarding_no;
+    @Column(insertable = false, updatable = false)
     String seat_no;
     @OneToOne
     @JoinColumns({@JoinColumn(name = "ticket_no"), @JoinColumn(name = "flight_id")})

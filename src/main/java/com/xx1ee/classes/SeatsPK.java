@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoardingPassesPK implements Serializable {
-    String ticket_no;
-    Integer flight_id;
+public class SeatsPK implements Serializable {
+    String aircraft_code;
+    String seat_no;
 }
