@@ -1,10 +1,7 @@
 package com.xx1ee.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -20,21 +17,21 @@ public class flights {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "flights_flight_id_seq")
     @SequenceGenerator(name = "flights_flight_id_seq", sequenceName = "flight_seq", allocationSize = 1)
-    @Column(updatable = false, nullable = false)
+    @Column(name = "flight_id", updatable = false, nullable = false)
     Integer flight_id;
-    @Column(nullable = false)
+    @Column(name = "flight_no", nullable = false)
     String flight_no;
-    @Column(nullable = false)
+    @Column(name="scheduled_departure", nullable = false)
     OffsetDateTime scheduled_departure;
-    @Column(nullable = false)
-    OffsetDateTime getScheduled_arrival;
+    @Column(name="scheduled_arrival", nullable = false)
+    OffsetDateTime scheduled_arrival;
     @ManyToOne
     @JoinColumn(name = "departure_airport", nullable = false)
     airports_data departure_airport;
     @ManyToOne
     @JoinColumn(name = "arrival_airport", nullable = false)
     airports_data arrival_airport;
-    @Column(nullable = false)
+    @Column(name = "status", nullable = false)
     String status;
     @ManyToOne
     @JoinColumn(name = "aircraft_code", nullable = false)

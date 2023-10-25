@@ -19,10 +19,10 @@ public class ticket_flights {
     BoardingPassesPK boardingPassesPK;
     String fare_conditions;
     Long amount;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="ticket_no", updatable = false, insertable = false)
     tickets tickets;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="flight_id", updatable = false, insertable = false)
     flights flights;
 }

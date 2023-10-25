@@ -20,8 +20,6 @@ public class tickets {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_ref")
     bookings book_ref;
-    @ManyToOne(fetch = FetchType.LAZY)
-    flights flights;
     String passenger_id;
     String passenger_name;
     @JdbcTypeCode(SqlTypes.JSON)

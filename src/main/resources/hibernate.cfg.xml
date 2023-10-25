@@ -10,6 +10,8 @@
     <property name="connection.password">English56</property>
     <property name="javax.persistence.jdbc.driver">org.postgresql.Driver</property>
     <property name="org.hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="format_sql">true</property>
     <mapping class="com.xx1ee.entity.bookings"/>
     <mapping class="com.xx1ee.entity.aircrafts_data"/>
     <mapping class="com.xx1ee.entity.airports_data"/>

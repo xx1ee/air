@@ -1,6 +1,7 @@
 package com.xx1ee;
 
 import com.xx1ee.entity.aircrafts_data;
+import com.xx1ee.entity.tickets;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -15,9 +16,10 @@ public class Main {
              Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             aircrafts_data e = session.createNativeQuery("SELECT * FROM aircrafts_data  " +
-                    "e WHERE e.aircraft_code = '319'", aircrafts_data.class).getSingleResult();
-            System.out.println(e.toString());
+                    "e WHERE e.aircraft_code = 319", aircrafts_data.class).getSingleResult();
+            System.out.println(e.getRange());
             System.out.println(e.getModel().getEn());
+            System.out.println(e.getModel().getRu());
             session.getTransaction().commit();
         }
     }
