@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
-public class ticket_flights {
+public class ticket_flights implements BaseEntity{
     @EmbeddedId
     BoardingPassesPK boardingPassesPK;
     String fare_conditions;

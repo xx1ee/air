@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @Table(name = "flights", schema = "bookings")
 @Entity
-public class flights {
+public class flights implements BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "flights_flight_id_seq")
     @SequenceGenerator(name = "flights_flight_id_seq", sequenceName = "flight_seq", allocationSize = 1)
@@ -40,6 +40,6 @@ public class flights {
     aircrafts_data aircraft_code;
     OffsetDateTime actual_departure;
     OffsetDateTime actual_arrival;
-    @OneToMany(mappedBy = "flights")
+    @OneToMany(mappedBy = "flights", fetch = FetchType.LAZY)
     List<ticket_flights> ticketsList = new ArrayList<>();
 }

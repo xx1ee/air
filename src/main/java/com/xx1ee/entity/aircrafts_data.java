@@ -19,7 +19,7 @@ import org.hibernate.type.SqlTypes;
 @NoArgsConstructor
 @Builder
 @Entity
-public class aircrafts_data {
+public class aircrafts_data implements BaseEntity{
     @Id
     String aircraft_code;
     Integer range;

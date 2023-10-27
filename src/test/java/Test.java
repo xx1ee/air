@@ -165,13 +165,26 @@ public class Test {
             System.out.println(ticket_flights.getTickets().getTicket_no());
             System.out.println(ticket_flights.getFlights().getFlight_id());
             System.out.println(ticket_flights.getAmount());
-            //seats seats = com.xx1ee.entity.seats.builder().seatsPK(new SeatsPK("319", "6666")).aircraft_code(aircrafts_data).fare_conditions("Economy").build();
-            //session.persist(seats);
             tickets tickets = session.get(com.xx1ee.entity.tickets.class, "0005432000860");
             flights flights = session.get(com.xx1ee.entity.flights.class, 1);
             com.xx1ee.entity.ticket_flights ticket_flights1 = com.xx1ee.entity.ticket_flights.
                     builder().boardingPassesPK(new BoardingPassesPK(tickets.getTicket_no(), flights.getFlight_id())).tickets(tickets).flights(flights).amount((long) 7777.00).fare_conditions("Economy").build();
             session.persist(ticket_flights1);
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test10() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            tickets ticket = session.get(com.xx1ee.entity.tickets.class, "0005432000892");
+            System.out.println(ticket.getTicket_no());
+            System.out.println(ticket.getPassenger_id());
+            System.out.println(ticket.getBook_ref().getBook_ref());
+            System.out.println(ticket.getContact_data().getPhone() + " " + ticket.getContact_data().getEmail());
             session.getTransaction().commit();
         }
     }

@@ -18,7 +18,7 @@ import java.util.List;
 @Builder
 @Table(name = "airports_data", schema = "bookings")
 @Entity
-public class airports_data {
+public class airports_data implements BaseEntity{
     @Id
     String airport_code;
     @JdbcTypeCode(SqlTypes.JSON)

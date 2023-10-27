@@ -14,7 +14,7 @@ import org.hibernate.type.SqlTypes;
 @Builder
 @Table(name = "tickets", schema = "bookings")
 @Entity
-public class tickets {
+public class tickets implements BaseEntity{
     @Id
     String ticket_no;
     @ManyToOne(fetch = FetchType.LAZY)

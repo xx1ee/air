@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "seats", schema = "bookings")
-public class seats {
+public class seats implements BaseEntity{
     @EmbeddedId
     SeatsPK seatsPK;
     @ManyToOne
