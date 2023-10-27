@@ -1,5 +1,6 @@
 import com.xx1ee.classes.BoardingPassesPK;
 import com.xx1ee.classes.SeatsPK;
+import com.xx1ee.classes.Status;
 import com.xx1ee.entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -69,7 +70,7 @@ public class Test {
                     "e WHERE e.ticket_no = '0005432325079'", boarding_passes.class).getResultList();
             for (var s : e) {
                 System.out.println("flight_id " + s.getBoardingPassesPK().getFlight_id());
-                System.out.println("seat_no " + s.getSeat_no());
+                //System.out.println("seat_no " + s.getSeat_no());
                 System.out.println("boarding " + s.getBoarding_no());
                 System.out.println("amount " + s.getTicket_flights().getAmount());
             }
@@ -87,7 +88,7 @@ public class Test {
                     "e WHERE e.flight_id = 543", boarding_passes.class).getResultList();
             for (var s : e) {
                 System.out.println("flight_id " + s.getBoardingPassesPK().getFlight_id());
-                System.out.println("seat_no " + s.getSeat_no());
+                //System.out.println("seat_no " + s.getSeat_no());
                 System.out.println("boarding " + s.getBoarding_no());
                 System.out.println("amount " + s.getTicket_flights().getAmount() + "\n");
             }
@@ -104,6 +105,7 @@ public class Test {
             session.beginTransaction();
             var e = session.createNativeQuery("SELECT * FROM bookings  " +
                     "e WHERE e.book_ref = '3B54BB'", bookings.class).getResultList();
+
             for (var s : e) {
                 System.out.println(s.getBook_ref() + " ");
                 System.out.println(s.getBook_date() + " ");
@@ -147,8 +149,29 @@ public class Test {
              Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             aircrafts_data aircrafts_data = session.get(com.xx1ee.entity.aircrafts_data.class, 319);
-            seats seats = com.xx1ee.entity.seats.builder().seatsPK(new SeatsPK("319", "123333")).seat_no("123333").aircraft_code(aircrafts_data).fare_conditions("Economy").build();
+            seats seats = com.xx1ee.entity.seats.builder().seatsPK(new SeatsPK("319", "6666")).aircraft_code(aircrafts_data).fare_conditions("Economy").build();
             session.persist(seats);
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test9() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            ticket_flights ticket_flights = session.get(ticket_flights.class, new BoardingPassesPK("0005432000860", 57376));
+            System.out.println(ticket_flights.getTickets().getTicket_no());
+            System.out.println(ticket_flights.getFlights().getFlight_id());
+            System.out.println(ticket_flights.getAmount());
+            //seats seats = com.xx1ee.entity.seats.builder().seatsPK(new SeatsPK("319", "6666")).aircraft_code(aircrafts_data).fare_conditions("Economy").build();
+            //session.persist(seats);
+            tickets tickets = session.get(com.xx1ee.entity.tickets.class, "0005432000860");
+            flights flights = session.get(com.xx1ee.entity.flights.class, 1);
+            com.xx1ee.entity.ticket_flights ticket_flights1 = com.xx1ee.entity.ticket_flights.
+                    builder().boardingPassesPK(new BoardingPassesPK(tickets.getTicket_no(), flights.getFlight_id())).tickets(tickets).flights(flights).amount((long) 7777.00).fare_conditions("Economy").build();
+            session.persist(ticket_flights1);
             session.getTransaction().commit();
         }
     }

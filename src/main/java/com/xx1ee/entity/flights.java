@@ -11,6 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
+@Setter
 @Table(name = "flights", schema = "bookings")
 @Entity
 public class flights {
@@ -26,15 +28,15 @@ public class flights {
     @Column(name="scheduled_arrival", nullable = false)
     OffsetDateTime scheduled_arrival;
     @ManyToOne
-    @JoinColumn(name = "departure_airport", nullable = false)
+    @JoinColumn(name = "departure_airport", nullable = false, insertable = false, updatable = false)
     airports_data departure_airport;
     @ManyToOne
-    @JoinColumn(name = "arrival_airport", nullable = false)
+    @JoinColumn(name = "arrival_airport", nullable = false, insertable = false, updatable = false)
     airports_data arrival_airport;
     @Column(name = "status", nullable = false)
     String status;
     @ManyToOne
-    @JoinColumn(name = "aircraft_code", nullable = false)
+    @JoinColumn(name = "aircraft_code", nullable = false, insertable = false, updatable = false)
     aircrafts_data aircraft_code;
     OffsetDateTime actual_departure;
     OffsetDateTime actual_arrival;

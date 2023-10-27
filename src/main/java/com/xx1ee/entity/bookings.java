@@ -1,9 +1,7 @@
 package com.xx1ee.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.persistence.criteria.Fetch;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +23,7 @@ public class bookings {
     String book_ref;
     OffsetDateTime book_date;
     Long total_amount;
-    @OneToMany(mappedBy = "book_ref")
+    @OneToMany(mappedBy = "book_ref", fetch = FetchType.EAGER)
+    @Column(insertable = false, updatable = false)
     List<tickets> tickets = new ArrayList<>();
 }

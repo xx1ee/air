@@ -9,8 +9,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class BoardingPassesPK implements Serializable {
     String ticket_no;
     Integer flight_id;

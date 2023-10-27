@@ -22,6 +22,5 @@ public class seats {
     @ManyToOne
     @JoinColumn(name = "aircraft_code", insertable = false, updatable = false)
     aircrafts_data aircraft_code;
-    String seat_no;
     String fare_conditions;
 }
