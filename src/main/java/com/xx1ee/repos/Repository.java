@@ -1,4 +1,4 @@
-package com.xx1ee.dao;
+package com.xx1ee.repos;
 
 import com.xx1ee.entity.BaseEntity;
 
@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public interface Dao<K extends Serializable, E extends BaseEntity> {
+public interface Repository<K extends Serializable, E extends BaseEntity> {
     E save(E entity);
     void delete(K id);
     void update(E entity);
