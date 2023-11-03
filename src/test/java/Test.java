@@ -1,12 +1,14 @@
-import com.xx1ee.classes.BoardingPassesPK;
-import com.xx1ee.classes.SeatsPK;
-import com.xx1ee.classes.Status;
+import com.xx1ee.classes.*;
 import com.xx1ee.entity.*;
+import com.xx1ee.mapper.AirportsDataReadMapper;
+import com.xx1ee.repos.AirportsDataRepository;
+import com.xx1ee.service.AirportsDataService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.Assertions;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Test {
@@ -185,6 +187,36 @@ public class Test {
             System.out.println(ticket.getPassenger_id());
             System.out.println(ticket.getBook_ref().getBook_ref());
             System.out.println(ticket.getContact_data().getPhone() + " " + ticket.getContact_data().getEmail());
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test11() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test12() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            //AirportsDataRepository airportsDataRepository = new AirportsDataRepository(sessionFactory.getCurrentSession());
+            airports_data a = session.get(airports_data.class, "BTK");
+            System.out.println(a.getCoordinates());
+            airports_data ab = airports_data.builder().airport_code("BEB")
+                    .coordinates(a.getCoordinates())
+                    .airport_name(a.getAirport_name())
+                    .city(a.getCity())
+                    .timezone(a.getTimezone())
+                    .build();
+            session.persist(ab);
             session.getTransaction().commit();
         }
     }

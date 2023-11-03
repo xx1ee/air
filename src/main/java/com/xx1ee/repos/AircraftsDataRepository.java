@@ -8,10 +8,10 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Optional;
 @RequiredArgsConstructor
-public class AircraftsDataRepository implements Repository<String, BaseEntity> {
+public class AircraftsDataRepository implements Repository<String,aircrafts_data> {
     private final EntityManager entityManager;
     @Override
-    public BaseEntity save(BaseEntity entity) {
+    public aircrafts_data save(aircrafts_data entity) {
         entityManager.persist(entity);
         return entity;
     }
@@ -23,18 +23,18 @@ public class AircraftsDataRepository implements Repository<String, BaseEntity> {
     }
 
     @Override
-    public void update(BaseEntity entity) {
+    public void update(aircrafts_data entity) {
         entityManager.merge(entity);
         entityManager.flush();
     }
 
     @Override
-    public Optional<BaseEntity> findById(String id) {
+    public Optional<aircrafts_data> findById(String id) {
         return Optional.of(entityManager.find(aircrafts_data.class, id));
     }
 
     @Override
-    public List<BaseEntity> findAll() {
+    public List<aircrafts_data> findAll() {
         return entityManager.createNativeQuery("select * from bookings.aircrafts_data", aircrafts_data.class).getResultList();
     }
 }

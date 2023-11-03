@@ -7,8 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.geolatte.geom.Geometry;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.locationtech.jts.geom.Point;
 
 import java.util.List;
 
@@ -27,7 +29,8 @@ public class airports_data implements BaseEntity{
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     City city;
-    String coordinates;
+    //@Column(name = "coordinates",columnDefinition="Point")
+    Point coordinates;
     String timezone;
     @OneToMany(mappedBy="departure_airport")
     List<flights> departureList;
