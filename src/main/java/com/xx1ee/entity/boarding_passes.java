@@ -17,8 +17,9 @@ import java.util.List;
 public class boarding_passes implements BaseEntity{
     @EmbeddedId
     BoardingPassesPK boardingPassesPK;
+    @Column(name = "boarding_no")
     Integer boarding_no;
-    @Column(insertable = false, updatable = false)
+    @Column(name="seat_no")
     String seat_no;
     @OneToOne
     @JoinColumns({@JoinColumn(name = "ticket_no"), @JoinColumn(name = "flight_id")})

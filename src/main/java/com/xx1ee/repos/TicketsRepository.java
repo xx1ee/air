@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class TicketsRepository implements Repository<String, BaseEntity> {
+public class TicketsRepository implements Repository<String, tickets> {
     private final EntityManager entityManager;
 
     @Override
-    public BaseEntity save(BaseEntity entity) {
+    public tickets save(tickets entity) {
         entityManager.persist(entity);
         return entity;
     }
@@ -25,18 +25,18 @@ public class TicketsRepository implements Repository<String, BaseEntity> {
     }
 
     @Override
-    public void update(BaseEntity entity) {
+    public void update(tickets entity) {
         entityManager.merge(entity);
         entityManager.flush();
     }
 
     @Override
-    public Optional<BaseEntity> findById(String id) {
+    public Optional<tickets> findById(String id) {
         return Optional.of(entityManager.find(tickets.class, id));
     }
 
     @Override
-    public List<BaseEntity> findAll() {
+    public List<tickets> findAll() {
         return entityManager.createNativeQuery("select * from bookings.tickets", tickets.class).getResultList();
     }
 }

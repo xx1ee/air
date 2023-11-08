@@ -1,6 +1,7 @@
 package com.xx1ee.entity;
 
 import com.xx1ee.classes.BoardingPassesPK;
+import com.xx1ee.classes.FareCondition;
 import com.xx1ee.classes.SeatsPK;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

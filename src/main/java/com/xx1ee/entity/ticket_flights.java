@@ -1,6 +1,7 @@
 package com.xx1ee.entity;
 
 import com.xx1ee.classes.BoardingPassesPK;
+import com.xx1ee.classes.TicketFlightsId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +17,7 @@ import java.util.List;
 @Entity
 public class ticket_flights implements BaseEntity{
     @EmbeddedId
-    BoardingPassesPK boardingPassesPK;
+    TicketFlightsId ticketFlightsId;
     String fare_conditions;
     Long amount;
     @ManyToOne(fetch = FetchType.LAZY)

@@ -1,12 +1,12 @@
 package com.xx1ee.classes;
 
 public enum Status{
-    ON_TIME("On Time"),
-    DELAYED("Delayed"),
-    DEPARTED("Departed"),
-    ARRIVED("Arrived"),
-    SCHEDULED("Scheduled"),
-    CANCELLED("Cancelled");
+    On_Time("On Time"),
+    Delayed("Delayed"),
+    Departed("Departed"),
+    Arrived("Arrived"),
+    Scheduled("Scheduled"),
+    Cancelled("Cancelled");
 
     private String status;
 
