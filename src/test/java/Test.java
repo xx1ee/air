@@ -1,4 +1,5 @@
 import com.xx1ee.classes.*;
+import com.xx1ee.dto.AirportsDataCreateDto;
 import com.xx1ee.dto.BoardingPassesCreateDto;
 import com.xx1ee.entity.*;
 import com.xx1ee.mapper.AirportsDataCreateMapper;
@@ -12,6 +13,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.junit.jupiter.api.Assertions;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinates;
+import org.locationtech.jts.geom.GeometryFactory;
+
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -355,6 +360,69 @@ public class Test {
                     .fare_conditions(String.valueOf(FareCondition.Business))
                     .amount(25000L)
                     .build());
+            session.getTransaction().commit();
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    void test18() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            AircraftsDataService aircraftsDataService = new AircraftsDataService(new AircraftsDataRepository(session));
+            var entity = aircrafts_data.builder()
+                    .model(new Model("Shmurd182", "Шмурд182"))
+                    .range(3000)
+                    .aircraft_code("182")
+                    .build();
+            aircraftsDataService.create(entity);
+            session.getTransaction().commit();
+            session.beginTransaction();
+            Assertions.assertTrue(aircraftsDataService.delete("182"));
+            aircraftsDataService.create(entity);
+            entity.setModel(new Model("Shmurdyak182", "Шмурдяк182"));
+            aircraftsDataService.update(entity);
+            var list = aircraftsDataService.findAll();
+            session.getTransaction().commit();
+            list.forEach(l -> System.out.println(l.getAircraft_code() + " " + l.getModel().getRu() + " " + l.getRange()));
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test19() {
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Coordinate coordinate = new Coordinate(33.9, -118.4);
+        var p = geometryFactory.createPoint(coordinate);
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try (SessionFactory sessionFactory = configuration.buildSessionFactory();
+             Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            AirportsDataService airportsDataService = new AirportsDataService(new AirportsDataRepository(session), new AirportsDataReadMapper(), new AirportsDataCreateMapper());
+            var airport = airports_data.builder()
+                            .airport_code("LAX")
+                                    .airport_name(new AirportName("Los Angeles International Airport",
+                                            "Лос-Анджелес"))
+                    .city(new City("LA", "Лос-Анджелес"))
+                    .coordinates(p)
+                    .timezone("Pacific Standart Time")
+                    .build();
+            System.out.println(airport.toString());
+            var air = new AirportsDataCreateDto(airport.getAirport_code(), airport.getAirport_name(), airport.getCity(),
+                    p, airport.getTimezone());
+            airportsDataService.save(air);
+            session.getTransaction().commit();
+            session.beginTransaction();
+            Assertions.assertTrue(airportsDataService.delete("LAX"));
+            session.getTransaction().commit();
+            session.beginTransaction();
+            airportsDataService.save(air);
+            airport.setTimezone("LA timezone");
+            airport.setAirport_name(new AirportName("Los-Angeles International Airport", "Международный аэропорт Лос-Анджелес"));
+            airportsDataService.update(airport);
+            var list = airportsDataService.findAll();
+            list.forEach(l -> System.out.println(l.getAirport_code() + " " + l.getAirport_name().getRu() + " " + l.getCity().getRu() + " " + l.getTimezone() + " " + l.getCoordinates()));
             session.getTransaction().commit();
         }
     }

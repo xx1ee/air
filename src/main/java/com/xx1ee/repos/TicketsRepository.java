@@ -4,13 +4,14 @@ import com.xx1ee.entity.BaseEntity;
 import com.xx1ee.entity.tickets;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Session;
 
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 public class TicketsRepository implements Repository<String, tickets> {
-    private final EntityManager entityManager;
+    private final Session entityManager;
 
     @Override
     public tickets save(tickets entity) {
@@ -19,9 +20,8 @@ public class TicketsRepository implements Repository<String, tickets> {
     }
 
     @Override
-    public void delete(String id) {
-        entityManager.detach(id);
-        entityManager.flush();
+    public void delete(tickets id) {
+        entityManager.delete(id);
     }
 
     @Override

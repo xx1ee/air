@@ -5,13 +5,14 @@ import com.xx1ee.entity.BaseEntity;
 import com.xx1ee.entity.seats;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Session;
 
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 public class SeatsRepository implements Repository<SeatsPK, seats> {
-    private final EntityManager entityManager;
+    private final Session entityManager;
 
     @Override
     public seats save(seats entity) {
@@ -20,9 +21,8 @@ public class SeatsRepository implements Repository<SeatsPK, seats> {
     }
 
     @Override
-    public void delete(SeatsPK id) {
-        entityManager.detach(id);
-        entityManager.flush();
+    public void delete(seats id) {
+        entityManager.delete(id);
     }
 
     @Override

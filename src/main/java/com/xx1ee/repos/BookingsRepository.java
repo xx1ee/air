@@ -1,40 +1,38 @@
 package com.xx1ee.repos;
 
-import com.xx1ee.entity.BaseEntity;
 import com.xx1ee.entity.bookings;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Session;
 
 import java.util.List;
 import java.util.Optional;
 @RequiredArgsConstructor
 public class BookingsRepository implements Repository<String, bookings> {
-    private final EntityManager entityManager;
+    private final Session session;
     @Override
     public bookings save(bookings entity) {
-        entityManager.persist(entity);
+        session.persist(entity);
         return entity;
     }
 
     @Override
-    public void delete(String id) {
-        entityManager.detach(id);
-        entityManager.flush();
+    public void delete(bookings id) {
+        session.delete(id);
     }
 
     @Override
     public void update(bookings entity) {
-        entityManager.merge(entity);
-        entityManager.flush();
+        session.merge(entity);
+        session.flush();
     }
 
     @Override
     public Optional<bookings> findById(String id) {
-        return Optional.of(entityManager.find(bookings.class, id));
+        return Optional.of(session.find(bookings.class, id));
     }
 
     @Override
     public List<bookings> findAll() {
-        return entityManager.createNativeQuery("select * from bookings.bookings",bookings.class).getResultList();
+        return session.createNativeQuery("select * from bookings.bookings",bookings.class).getResultList();
     }
 }

@@ -11,6 +11,7 @@ public class AirportsDataCreateMapper implements Mapper<AirportsDataCreateDto, a
                 .airport_name(object.airportName())
                 .airport_code(object.airports_code())
                 .city(object.city())
+                .coordinates(object.coordinates())
                 .timezone(object.timezone())
                 .build();
     }

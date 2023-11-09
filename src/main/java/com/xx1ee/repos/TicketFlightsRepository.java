@@ -6,12 +6,13 @@ import com.xx1ee.entity.BaseEntity;
 import com.xx1ee.entity.ticket_flights;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Session;
 
 import java.util.List;
 import java.util.Optional;
 @RequiredArgsConstructor
 public class TicketFlightsRepository implements Repository<TicketFlightsId, ticket_flights> {
-    private final EntityManager entityManager;
+    private final Session entityManager;
     @Override
     public ticket_flights save(ticket_flights entity) {
         entityManager.persist(entity);
@@ -19,9 +20,8 @@ public class TicketFlightsRepository implements Repository<TicketFlightsId, tick
     }
 
     @Override
-    public void delete(TicketFlightsId id) {
-        entityManager.detach(id);
-        entityManager.flush();
+    public void delete(ticket_flights id) {
+        entityManager.delete(id);
     }
 
     @Override

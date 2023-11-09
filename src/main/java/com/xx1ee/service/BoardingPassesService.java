@@ -24,7 +24,7 @@ public class BoardingPassesService {
     @Transactional
     public boolean delete(BoardingPassesPK id) {
         var maybeAircraft = boardingPassesRepository.findById(id);
-        maybeAircraft.ifPresent(aircraft -> boardingPassesRepository.delete(id));
+        maybeAircraft.ifPresent(aircraft -> boardingPassesRepository.delete(maybeAircraft.get()));
         return maybeAircraft.isPresent();
     }
 

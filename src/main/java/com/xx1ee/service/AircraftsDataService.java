@@ -18,7 +18,8 @@ public class AircraftsDataService {
     @Transactional
     public boolean delete(String id) {
         var maybeAircraft = aircraftsDataRepository.findById(id);
-        maybeAircraft.ifPresent(aircraft -> aircraftsDataRepository.delete(id));
+        System.out.println(maybeAircraft.get().getModel().getRu());
+        maybeAircraft.ifPresent(aircraft -> aircraftsDataRepository.delete(maybeAircraft.get()));
         return maybeAircraft.isPresent();
     }
     public Optional<aircrafts_data> findById(String id) {

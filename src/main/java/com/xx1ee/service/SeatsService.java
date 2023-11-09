@@ -20,7 +20,7 @@ public class SeatsService {
     @Transactional
     public boolean delete(SeatsPK id) {
         var maybeAircraft = seatsRepository.findById(id);
-        maybeAircraft.ifPresent(aircraft -> seatsRepository.delete(id));
+        maybeAircraft.ifPresent(aircraft -> seatsRepository.delete(maybeAircraft.get()));
         return maybeAircraft.isPresent();
     }
     public Optional<seats> findById(SeatsPK id) {
