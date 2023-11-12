@@ -40,6 +40,6 @@ public class flights implements BaseEntity{
     aircrafts_data aircraft_code;
     OffsetDateTime actual_departure;
     OffsetDateTime actual_arrival;
-    @OneToMany(mappedBy = "flights", fetch = FetchType.LAZY)
-    List<ticket_flights> ticketsList = new ArrayList<>();
+    @OneToMany(mappedBy = "ticketFlightsId.flights", fetch = FetchType.LAZY)
+    List<ticket_flights> ticketsList;
 }

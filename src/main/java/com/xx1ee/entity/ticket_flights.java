@@ -20,10 +20,4 @@ public class ticket_flights implements BaseEntity{
     TicketFlightsId ticketFlightsId;
     String fare_conditions;
     Long amount;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="ticket_no", updatable = false, insertable = false)
-    tickets tickets;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="flight_id", updatable = false, insertable = false)
-    flights flights;
 }

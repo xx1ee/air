@@ -8,6 +8,7 @@ import com.xx1ee.mapper.BoardingPassesCreateMapper;
 import com.xx1ee.mapper.BoardingPassesReadMapper;
 import com.xx1ee.repos.*;
 import com.xx1ee.service.*;
+import jakarta.transaction.Transactional;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -183,14 +184,16 @@ public class Test {
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
              Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            ticket_flights ticket_flights = session.get(ticket_flights.class, new TicketFlightsId("0005432000860", 57376));
-            System.out.println(ticket_flights.getTickets().getTicket_no());
-            System.out.println(ticket_flights.getFlights().getFlight_id());
+            TicketsService ticketsService = new TicketsService(new TicketsRepository(session));
+            FlightsService flightsService = new FlightsService(new FlightsRepository(session));
+            ticket_flights ticket_flights = session.get(ticket_flights.class, new TicketFlightsId(ticketsService.findById("0005432000860").get(), flightsService.findById(57376).get()));
+            System.out.println(ticket_flights.getTicketFlightsId().getFlights());
+            System.out.println(ticket_flights.getTicketFlightsId().getTickets());
             System.out.println(ticket_flights.getAmount());
             tickets tickets = session.get(com.xx1ee.entity.tickets.class, "0005432000861");
             flights flights = session.get(com.xx1ee.entity.flights.class, 1);
             com.xx1ee.entity.ticket_flights ticket_flights1 = com.xx1ee.entity.ticket_flights.
-                    builder().ticketFlightsId(new TicketFlightsId(tickets.getTicket_no(), flights.getFlight_id())).tickets(tickets).flights(flights).amount((long) 7777.00).fare_conditions("Economy").build();
+                    builder().ticketFlightsId(new TicketFlightsId(tickets, flights)).amount((long) 7777.00).fare_conditions("Economy").build();
             session.persist(ticket_flights1);
             session.getTransaction().commit();
         }
@@ -271,7 +274,7 @@ public class Test {
                     .book_ref((bookings) new BookingsRepository(session).findById("486678").get())
                     .contact_data(new ContactData("bor@gmail.com", "+79891630718"))
                     .build();
-            session.persist(t);
+            //session.persist(t);
             session.getTransaction().commit();
         }
     }
@@ -354,9 +357,11 @@ public class Test {
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
              Session session = sessionFactory.openSession()) {
             session.beginTransaction();
+            TicketsService ticketsService = new TicketsService(new TicketsRepository(session));
+            FlightsService flightsService = new FlightsService(new FlightsRepository(session));
             TicketFlightsService ticketFlightsService = new TicketFlightsService(new TicketFlightsRepository(session));
             ticketFlightsService.create(ticket_flights.builder()
-                    .ticketFlightsId(new TicketFlightsId("0123", 125565))
+                    .ticketFlightsId(new TicketFlightsId(ticketsService.findById("0123").get(), flightsService.findById(125565).get()))
                     .fare_conditions(String.valueOf(FareCondition.Business))
                     .amount(25000L)
                     .build());
@@ -426,7 +431,155 @@ public class Test {
             session.getTransaction().commit();
         }
     }
+    @org.junit.jupiter.api.Test
+    void test20() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try(SessionFactory sessionFactory = configuration.buildSessionFactory();
+            Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            TicketsService ticketsService = new TicketsService(new TicketsRepository(session));
 
+            session.getTransaction().commit();
+        }
+    }
 
+    @org.junit.jupiter.api.Test
+    void test21() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try(SessionFactory sessionFactory = configuration.buildSessionFactory();
+            Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            BookingsService bookingsService = new BookingsService(new BookingsRepository(session));
+            bookings bookings = com.xx1ee.entity.bookings.builder()
+                    .book_ref("0000W")
+                    .book_date(OffsetDateTime.of(2017,10,10,10,0,0,0, ZoneOffset.ofHours(3)))
+                    .total_amount(29000L)
+                    .build();
+            bookingsService.delete("0000W");
+            bookingsService.create(bookings);
+            var findB = bookingsService.findById("0000W");
+            findB.ifPresent(f -> System.out.println(findB.get().toString()));
+            bookings.setTotal_amount(27000L);
+            bookingsService.update(bookings);
+            var l = bookingsService.findAll();
+            System.out.println(l.size());
+            //l.forEach(d -> System.out.println(d.getBook_ref() + " " + d.getBook_date() + " " + d.getTotal_amount()));
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test22() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try(SessionFactory sessionFactory = configuration.buildSessionFactory();
+            Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            TicketsService ticketsService = new TicketsService(new TicketsRepository(session));
+            //ticketsService.delete("0124");
+            tickets t = tickets.builder()
+                    .ticket_no("0124")
+                    .passenger_id("0123")
+                    .passenger_name("BORIS BAHLYKOV")
+                    .book_ref((bookings) new BookingsRepository(session).findById("0000W").get())
+                    .contact_data(new ContactData("bor@gmail.com", "+79891630718"))
+                    .build();
+            //ticketsService.create(t);
+            t.setPassenger_name("BORIS BAHLIKOV");
+            ticketsService.update(t);
+            System.out.println(ticketsService.findById(t.getTicket_no()).get().getPassenger_name() + " ");
+            BookingsService bookingsService = new BookingsService(new BookingsRepository(session));
+            System.out.println(bookingsService.findById("0000W").get().getTickets().get(0).getPassenger_name());
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test23() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try(SessionFactory sessionFactory = configuration.buildSessionFactory();
+            Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            FlightsService flightsService = new FlightsService(new FlightsRepository(session));
+            AirportsDataService airportsDataService = new AirportsDataService(new AirportsDataRepository(session), new AirportsDataReadMapper(), new AirportsDataCreateMapper());
+            AircraftsDataService aircraftsDataService = new AircraftsDataService(new AircraftsDataRepository(session));
+            var dto = airportsDataService.findById("LAX").get();
+            var kzn = airportsDataService.findById("PEZ").get();
+            var plane = aircraftsDataService.findById("182").get();
+            var flight = flights.builder()
+                    .flight_no("PG6066")
+                    .scheduled_departure(OffsetDateTime.of(2017, 1, 1, 8, 0, 0, 0, ZoneOffset.ofHours(4)))
+                    .scheduled_arrival(OffsetDateTime.of(2017, 1, 1, 14, 30, 0, 0, ZoneOffset.ofHours(4)))
+                    .departure_airport(airports_data.builder().airport_code(dto.airports_code())
+                            .coordinates(dto.coordinates())
+                            .city(dto.city())
+                            .timezone(dto.timezone())
+                            .build())
+                    .arrival_airport(airports_data.builder().airport_code(kzn.airports_code())
+                            .coordinates(kzn.coordinates())
+                            .city(kzn.city())
+                            .timezone(kzn.timezone())
+                            .build())
+                    .status(String.valueOf(Status.Arrived))
+                    .aircraft_code(plane)
+
+                    .build();
+            //flightsService.delete(125566);
+            //AirportsDataRepository airportsDataRepository = new AirportsDataRepository(sessionFactory.getCurrentSession());
+            System.out.println(flightsService.create(flight));
+            flight.setActual_departure(OffsetDateTime.of(2017, 1, 1, 8, 15, 0, 0, ZoneOffset.ofHours(4)));
+            flight.setActual_arrival(OffsetDateTime.of(2017, 1, 1, 14, 15, 0, 0, ZoneOffset.ofHours(4)));
+            flightsService.update(flight);
+            //System.out.println(flightsService.findById());
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test24() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try(SessionFactory sessionFactory = configuration.buildSessionFactory();
+            Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            TicketsService ticketsService = new TicketsService(new TicketsRepository(session));
+            FlightsService flightsService = new FlightsService(new FlightsRepository(session));
+            TicketFlightsService ticketFlightsService = new TicketFlightsService(new TicketFlightsRepository(session));
+            //ticketFlightsService.delete(new TicketFlightsId("0124", 125567));
+            ticket_flights ticket_flights = com.xx1ee.entity.ticket_flights.builder()
+                    .ticketFlightsId(new TicketFlightsId(ticketsService.findById("0124").get(), flightsService.findById(125567).get()))
+                    .fare_conditions(String.valueOf(FareCondition.Economy))
+                    .amount(9000L)
+                    .build();
+            ticket_flights ticket_flights1 = com.xx1ee.entity.ticket_flights.builder()
+                    .ticketFlightsId(new TicketFlightsId(ticketsService.findById("00054322222").get(), flightsService.findById(125567).get()))
+                    .fare_conditions(String.valueOf(FareCondition.Economy))
+                    .amount(9500L)
+                    .build();
+            //ticketFlightsService.create(ticket_flights1);
+            //var tf =ticketFlightsService.findById(new TicketFlightsId(ticketsService.findById("0124").get(), flightsService.findById(125567).get())).get();
+            System.out.println(flightsService.findById(125567).get().getTicketsList().size());
+            System.out.println(flightsService.findById(125567).get().getTicketsList().get(0).getTicketFlightsId().getTickets().getTicket_no());
+            System.out.println(flightsService.findById(125567).get().getTicketsList().get(1).getTicketFlightsId().getTickets().getTicket_no());
+            //System.out.println(ticketFlightsService.findById(new TicketFlightsId("0124", 125567)).get().getFlights().getDeparture_airport());
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    @Transactional
+    void test25() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try(SessionFactory sessionFactory = configuration.buildSessionFactory();
+            Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            BoardingPassesService boardingPassesService = new BoardingPassesService(new BoardingPassesRepository(session), new BoardingPassesCreateMapper(), new BoardingPassesReadMapper());
+            //System.out.println(ticketFlightsService.findById(new TicketFlightsId("0124", 125567)).get().getFlights().getDeparture_airport());
+            boardingPassesService.save(new BoardingPassesCreateDto(new BoardingPassesPK("00054322222", 125567), 666, "22A"));
+            var bp = boardingPassesService.findById(new BoardingPassesPK("00054322222", 125567)).get();
+            //boardingPassesService.delete(bp.boardingPassesPK());
+            session.getTransaction().commit();
+        }
+    }
 }
 

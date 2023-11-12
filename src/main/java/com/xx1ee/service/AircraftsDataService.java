@@ -15,7 +15,6 @@ public class AircraftsDataService {
     public String create(aircrafts_data aircrafts_data) {
         return aircraftsDataRepository.save(aircrafts_data).getAircraft_code();
     }
-    @Transactional
     public boolean delete(String id) {
         var maybeAircraft = aircraftsDataRepository.findById(id);
         System.out.println(maybeAircraft.get().getModel().getRu());

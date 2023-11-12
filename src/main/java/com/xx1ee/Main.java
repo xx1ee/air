@@ -1,7 +1,10 @@
 package com.xx1ee;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.xx1ee.classes.AirportName;
 import com.xx1ee.classes.City;
+import com.xx1ee.classes.Model;
 import com.xx1ee.entity.airports_data;
 import com.xx1ee.mapper.AirportsDataReadMapper;
 import com.xx1ee.repos.AirportsDataRepository;
@@ -14,13 +17,13 @@ import java.math.BigDecimal;
 
 public class Main {
     public static void main(String[] args) {
-        Configuration configuration = new Configuration();
-        configuration.configure();
-        try (SessionFactory sessionFactory = configuration.buildSessionFactory()) {
-            Session session = sessionFactory.getCurrentSession();
-            session.beginTransaction();
-
-            session.getTransaction().commit();
-        }
+        String data = "{\n" +
+                "        \"en\":\"Test170\",\n" +
+                "        \"ru\":\"Тест170\"\n" +
+                "}";
+        Gson gson = new Gson();
+        //JsonElement jsonModel = gson.fromJson(data, JsonElement.class);
+        Model model = gson.fromJson(data, Model.class);
+        System.out.println(model.getEn());
     }
 }

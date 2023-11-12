@@ -2,16 +2,15 @@ package com.xx1ee.entity;
 
 import com.xx1ee.classes.BoardingPassesPK;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Builder
 @Entity
 public class boarding_passes implements BaseEntity{
