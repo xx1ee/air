@@ -33,6 +33,6 @@ public class BookingsRepository implements Repository<String, bookings> {
 
     @Override
     public List<bookings> findAll() {
-        return session.createNativeQuery("select * from bookings.bookings",bookings.class).getResultList();
+        return session.createNativeQuery("select * from bookings.bookings limit 100",bookings.class).getResultList();
     }
 }
