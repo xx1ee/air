@@ -2,6 +2,7 @@ package com.xx1ee.service;
 
 import com.xx1ee.entity.BaseEntity;
 import com.xx1ee.entity.aircrafts_data;
+import com.xx1ee.entity.flights;
 import com.xx1ee.repos.AircraftsDataRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,9 @@ public class AircraftsDataService {
     public String create(aircrafts_data aircrafts_data) {
         return aircraftsDataRepository.save(aircrafts_data).getAircraft_code();
     }
+    @Transactional
     public boolean delete(String id) {
         var maybeAircraft = aircraftsDataRepository.findById(id);
-        System.out.println(maybeAircraft.get().getModel().getRu());
         maybeAircraft.ifPresent(aircraft -> aircraftsDataRepository.delete(maybeAircraft.get()));
         return maybeAircraft.isPresent();
     }
@@ -30,4 +31,5 @@ public class AircraftsDataService {
     public void update(aircrafts_data aircrafts_data) {
         aircraftsDataRepository.update(aircrafts_data);
     }
+
 }

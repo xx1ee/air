@@ -27,7 +27,6 @@ public class TicketFlightsRepository implements Repository<TicketFlightsId, tick
     @Override
     public void update(ticket_flights entity) {
         entityManager.merge(entity);
-        entityManager.flush();
     }
 
     @Override
@@ -38,5 +37,12 @@ public class TicketFlightsRepository implements Repository<TicketFlightsId, tick
     @Override
     public List<ticket_flights> findAll() {
         return entityManager.createNativeQuery("select * from bookings.ticket_flights", ticket_flights.class).getResultList();
+    }
+    public Optional<ticket_flights> findCheapestTicket(String cityFrom, String cityTo) {
+        return Optional.ofNullable(entityManager.createNativeQuery(String.format("select * from ticket_flights where flight_id in (select flight_id from flights where departure_airport in " +
+                "(select airport_code from airports_data where " +
+                "airport_name = '%s')" +
+                "and arrival_airport in (select airport_code from airports_data where " +
+                "airport_name = '%s')) ORDER BY amount limit 1", cityFrom, cityTo), ticket_flights.class).getResultList().get(0));
     }
 }

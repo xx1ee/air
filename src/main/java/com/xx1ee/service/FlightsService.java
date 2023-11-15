@@ -1,10 +1,12 @@
 package com.xx1ee.service;
 
 import com.xx1ee.classes.SeatsPK;
+import com.xx1ee.dto.PopularPlaneReadDto;
 import com.xx1ee.entity.flights;
 import com.xx1ee.entity.seats;
 import com.xx1ee.repos.FlightsRepository;
 import com.xx1ee.repos.SeatsRepository;
+import com.xx1ee.servlet.FlightsMostPopularAircraft;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
@@ -30,5 +32,11 @@ public class FlightsService {
     }
     public void update(flights flights) {
         flightsRepository.update(flights);
+    }
+    public flights getShortestFlight() {
+       return flightsRepository.shortestFlight();
+    }
+    public PopularPlaneReadDto getMostPopularAircraft() {
+        return flightsRepository.mostPopularAircraft();
     }
 }

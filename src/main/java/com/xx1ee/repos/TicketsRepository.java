@@ -27,7 +27,6 @@ public class TicketsRepository implements Repository<String, tickets> {
     @Override
     public void update(tickets entity) {
         entityManager.merge(entity);
-        entityManager.flush();
     }
 
     @Override

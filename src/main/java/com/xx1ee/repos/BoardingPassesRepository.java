@@ -24,7 +24,6 @@ public class BoardingPassesRepository implements Repository<BoardingPassesPK, bo
     @Override
     public void update(boarding_passes entity) {
         session.merge(entity);
-        session.flush();
     }
 
     @Override

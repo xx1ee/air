@@ -4,12 +4,15 @@ import com.xx1ee.dto.AirportsDataCreateDto;
 import com.xx1ee.dto.AirportsDataReadDto;
 import com.xx1ee.entity.aircrafts_data;
 import com.xx1ee.entity.airports_data;
+import com.xx1ee.entity.flights;
+import com.xx1ee.entity.ticket_flights;
 import com.xx1ee.mapper.AirportsDataCreateMapper;
 import com.xx1ee.mapper.AirportsDataReadMapper;
 import com.xx1ee.repos.AirportsDataRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,4 +41,21 @@ public class AirportsDataService {
     public List<airports_data> findAll() {
         return airportsDataRepository.findAll();
     }
+    @Transactional
+    public List<flights> getDepartures(String id) {
+        var maybeAircraft = airportsDataRepository.findById(id);
+        if (maybeAircraft.isPresent()) {
+            return maybeAircraft.get().getDepartureList();
+        }
+        return new ArrayList<>();
+    }
+    @Transactional
+    public List<flights> getArrivals(String id) {
+        var maybeAircraft = airportsDataRepository.findById(id);
+        if (maybeAircraft.isPresent()) {
+            return maybeAircraft.get().getArrivalList();
+        }
+        return new ArrayList<>();
+    }
+
 }

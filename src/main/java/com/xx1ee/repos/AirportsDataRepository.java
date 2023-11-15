@@ -1,6 +1,7 @@
 package com.xx1ee.repos;
 
 import com.xx1ee.entity.airports_data;
+import com.xx1ee.entity.flights;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;

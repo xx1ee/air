@@ -18,13 +18,11 @@ public class AircraftsDataRepository implements Repository<String,aircrafts_data
     @Override
     public void delete(aircrafts_data id) {
         session.delete(id);
-        session.flush();
     }
 
     @Override
     public void update(aircrafts_data entity) {
         session.merge(entity);
-        session.flush();
     }
 
     @Override

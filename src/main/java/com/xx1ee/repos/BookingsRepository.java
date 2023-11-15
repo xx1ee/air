@@ -23,7 +23,6 @@ public class BookingsRepository implements Repository<String, bookings> {
     @Override
     public void update(bookings entity) {
         session.merge(entity);
-        session.flush();
     }
 
     @Override

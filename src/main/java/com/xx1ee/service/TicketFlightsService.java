@@ -31,4 +31,7 @@ public class TicketFlightsService {
     public void update(ticket_flights tickets_flights) {
         ticketFlightsRepository.update(tickets_flights);
     }
+    public Optional<ticket_flights> findCheapestTicket(String cityFrom, String cityTo) {
+        return ticketFlightsRepository.findCheapestTicket(cityFrom, cityTo);
+    }
 }

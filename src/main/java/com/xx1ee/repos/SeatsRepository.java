@@ -28,7 +28,6 @@ public class SeatsRepository implements Repository<SeatsPK, seats> {
     @Override
     public void update(seats entity) {
         entityManager.merge(entity);
-        entityManager.flush();
     }
 
     @Override
