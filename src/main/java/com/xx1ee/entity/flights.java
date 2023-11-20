@@ -6,6 +6,22 @@ import lombok.*;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+@NamedEntityGraph(name = "withTicketsList",
+        attributeNodes = {
+                @NamedAttributeNode(value = "ticketsList", subgraph = "tickets-subgraph"),
+                @NamedAttributeNode(value = "departure_airport"),
+                @NamedAttributeNode(value = "arrival_airport"),
+                @NamedAttributeNode(value = "aircraft_code")
+        },
+        subgraphs = {
+        @NamedSubgraph(
+                name = "tickets-subgraph",
+                attributeNodes = {
+                        @NamedAttributeNode("ticketFlightsId")
+                }
+        )
+}
+)
 
 @Data
 @AllArgsConstructor

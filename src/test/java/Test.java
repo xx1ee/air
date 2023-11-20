@@ -8,6 +8,7 @@ import com.xx1ee.mapper.BoardingPassesCreateMapper;
 import com.xx1ee.mapper.BoardingPassesReadMapper;
 import com.xx1ee.repos.*;
 import com.xx1ee.service.*;
+import jakarta.persistence.EntityGraph;
 import jakarta.transaction.Transactional;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -22,7 +23,9 @@ import org.locationtech.jts.geom.GeometryFactory;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Test {
     @org.junit.jupiter.api.Test
@@ -63,8 +66,8 @@ public class Test {
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
              Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            airports_data e = session.createNativeQuery("SELECT * FROM airports_data  " +
-                    "e WHERE e.airport_code = 'BZK'", airports_data.class).getSingleResult();
+            airports_data e = session.createQuery("SELECT ad FROM airports_data  ad" +
+                    " WHERE ad.airport_code = 'BZK'", airports_data.class).setHint("jakarta.persistence.fetchgraph", session.getEntityGraph("withDepartureAndArrival")).getSingleResult();
             System.out.println(e.getAirport_code());
             System.out.println(e.getAirport_name().getEn());
             System.out.println(e.getCoordinates());
@@ -123,8 +126,12 @@ public class Test {
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
              Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            var e = session.createNativeQuery("SELECT * FROM bookings  " +
-                    "e WHERE e.book_ref = '3B54BB'", bookings.class).getResultList();
+            EntityGraph entityGraph = session.getEntityGraph("withTickets");
+            Map<String, Object> properties = new HashMap<>();
+            properties.put("jakarta.persistence.fetchgraph", entityGraph);
+            //var e = session.find(bookings.class, "3B54BB", properties);
+            var e = session.createQuery("SELECT b FROM bookings b " +
+                 " WHERE b.book_ref = '3B54BB'", bookings.class).setHint("jakarta.persistence.fetchgraph", entityGraph).getResultList();
 
             for (var s : e) {
                 System.out.println(s.getBook_ref() + " ");
@@ -148,13 +155,15 @@ public class Test {
         try (SessionFactory sessionFactory = configuration.buildSessionFactory();
              Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            var e = session.createNativeQuery("SELECT * FROM flights  " +
-                    "e WHERE e.flight_no = 'PG0159'", flights.class).getResultList();
+            var e = session.createQuery("SELECT f FROM flights f " +
+                    " WHERE f.flight_no = 'PG0159'", flights.class).setHint("jakarta.persistence.fetchgraph", session.getEntityGraph("withTicketsList"))
+                    .getResultList();
             for (var s : e) {
                 System.out.println(s.getFlight_id());
                 System.out.println(s.getStatus() + " ");
                 System.out.println(s.getAircraft_code().getModel().getRu() + " ");
                 System.out.println(s.getActual_departure() + " ");
+                System.out.println(s.getTicketsList().size());
                 System.out.println(s.getArrival_airport().getAirport_name().getRu());
                 System.out.println(s.getDeparture_airport().getAirport_name().getRu());
                 System.out.println(s.getScheduled_arrival() + "\n");
@@ -578,6 +587,19 @@ public class Test {
             boardingPassesService.save(new BoardingPassesCreateDto(new BoardingPassesPK("00054322222", 125567), 666, "22A"));
             var bp = boardingPassesService.findById(new BoardingPassesPK("00054322222", 125567)).get();
             //boardingPassesService.delete(bp.boardingPassesPK());
+            session.getTransaction().commit();
+        }
+    }
+    @org.junit.jupiter.api.Test
+    void test26() {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+        try(SessionFactory sessionFactory = configuration.buildSessionFactory();
+            Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            TicketsService ticketsService = new TicketsService(new TicketsRepository(session));
+            System.out.println(ticketsService.findById("0005432000860").get().getFlightsList().get(0).getFare_conditions());
+            System.out.println(ticketsService.findById("0005432000860").get().getFlightsList().get(1).getFare_conditions());
             session.getTransaction().commit();
         }
     }

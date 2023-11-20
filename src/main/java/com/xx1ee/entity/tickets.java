@@ -11,7 +11,11 @@ import org.hibernate.type.SqlTypes;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@NamedEntityGraph(name = "withFlightsList",
+        attributeNodes = {
+                @NamedAttributeNode("flightsList")
+        }
+)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,4 +33,6 @@ public class tickets implements BaseEntity{
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     ContactData contact_data;
+    @OneToMany(mappedBy = "ticketFlightsId.tickets", fetch = FetchType.LAZY)
+    List<ticket_flights> flightsList;
 }

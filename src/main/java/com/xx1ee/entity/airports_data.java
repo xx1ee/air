@@ -13,7 +13,23 @@ import org.hibernate.type.SqlTypes;
 import org.locationtech.jts.geom.Point;
 
 import java.util.List;
+import java.util.Set;
 
+@NamedEntityGraph(name = "withDepartureAndArrival",
+        attributeNodes = {
+            @NamedAttributeNode(value = "departureList", subgraph = "departure-subgraph")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "departure-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("departure_airport"),
+                                @NamedAttributeNode("arrival_airport"),
+                                @NamedAttributeNode("aircraft_code")
+                        }
+                )
+        }
+)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,5 +51,5 @@ public class airports_data implements BaseEntity{
     @OneToMany(mappedBy="departure_airport")
     List<flights> departureList;
     @OneToMany(mappedBy = "arrival_airport")
-    List<flights> arrivalList;
+    Set<flights> arrivalList;
 }

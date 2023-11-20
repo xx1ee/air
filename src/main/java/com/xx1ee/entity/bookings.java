@@ -11,7 +11,20 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+@NamedEntityGraph(name = "withTickets",
+        attributeNodes = {
+                @NamedAttributeNode(value = "tickets", subgraph = "tickets-subgraph")
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "tickets-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("book_ref")
+                                //@NamedAttributeNode("flightsList")
+                        }
+                )
+        }
+)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

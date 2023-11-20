@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 public class AirportsDataService {
@@ -50,12 +51,12 @@ public class AirportsDataService {
         return new ArrayList<>();
     }
     @Transactional
-    public List<flights> getArrivals(String id) {
+    public Set<flights> getArrivals(String id) {
         var maybeAircraft = airportsDataRepository.findById(id);
         if (maybeAircraft.isPresent()) {
             return maybeAircraft.get().getArrivalList();
         }
-        return new ArrayList<>();
+        return Set.of(new flights());
     }
 
 }
